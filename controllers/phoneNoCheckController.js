@@ -1,7 +1,9 @@
 const hotelModel = require("../models/hotelModel");
+const mongoose = require("mongoose");
 const driverModel = require("../models/driverModel");
 const dispacherModel = require("../models/dispacherModel");
 const guestModel = require("../models/guestModel");
+const moment = require('moment');
 exports.logins = async (req, res) => {
     const table_name = req.body.table_name;
     if (table_name === 'hotel') {
@@ -11,7 +13,21 @@ exports.logins = async (req, res) => {
                 res.send(error)
             } else {
                 if (result.length === 0) {
-                    res.send({ data: result, message: 'Hotel Doesnot Exists' })
+                    const Createddate= new Date();
+                    const diapacher = new hotelModel({
+                        _id: mongoose.Types.ObjectId(),
+                        phoneno: req.body.phoneno,
+                        created_at: moment(Createddate).format("DD/MM/YYYY"),
+                        status: "unblock",
+                        device_token: req.body.device_token
+                    });
+                    try {
+                        const savedHotel = diapacher.save();
+                    res.json({ data: diapacher, message: 'Hotel Doesnot Exists' })
+
+                    } catch (err) {
+                        res.status(400).send(err);
+                    }
                 } else {
                     const idData = result[0]._id
                     // console.log(result[0]._id)
@@ -38,7 +54,22 @@ exports.logins = async (req, res) => {
                 res.send(error)
             } else {
                 if (result.length === 0) {
-                    res.send({ data: result, message: 'Driver Doesnot Exists' })
+                    // res.send({ data: result, message: 'Driver Doesnot Exists' })
+                    const Createddate= new Date();
+                    const driver = new driverModel({
+                        _id: mongoose.Types.ObjectId(),
+                        phoneno: req.body.phoneno,
+                        created_at: moment(Createddate).format("DD/MM/YYYY"),
+                        status: "block",
+                        device_token: req.body.device_token
+                    });
+                    try {
+                        const savedHotel = driver.save();
+                    res.json({ data: driver, message: 'Driver Doesnot Exists' })
+
+                    } catch (err) {
+                        res.status(400).send(err);
+                    }
                 } else {
                     const idData = result[0]._id
                     // console.log(result[0]._id)
@@ -65,7 +96,22 @@ exports.logins = async (req, res) => {
                 res.send(error)
             } else {
                 if (result.length === 0) {
-                    res.send({ data: result, message: 'Dispacher Doesnot Exists' })
+                    const Createddate= new Date();
+                    const Dispacher = new dispacherModel({
+                        _id: mongoose.Types.ObjectId(),
+                        phoneno: req.body.phoneno,
+                        created_at: moment(Createddate).format("DD/MM/YYYY"),
+                        status: "unblock",
+                        device_token: req.body.device_token
+                    });
+                    try {
+                        const savedHotel = Dispacher.save();
+                    res.json({ data: Dispacher, message: 'Dispacher Doesnot Exists' })
+
+                    } catch (err) {
+                        res.status(400).send(err);
+                    }
+                    // res.send({ data: result, message: 'Dispacher Doesnot Exists' })
                 } else {
                     const idData = result[0]._id
                     // console.log(result[0]._id)
@@ -92,7 +138,22 @@ exports.logins = async (req, res) => {
                 res.send(error)
             } else {
                 if (result.length === 0) {
-                    res.send({ data: result, message: 'Guest Doesnot Exists' })
+                    // res.send({ data: result, message: 'Guest Doesnot Exists' })
+                    const Createddate= new Date();
+                    const Guest = new guestModel({
+                        _id: mongoose.Types.ObjectId(),
+                        phoneno: req.body.phoneno,
+                        created_at: moment(Createddate).format("DD/MM/YYYY"),
+                        status: "unblock",
+                        device_token: req.body.device_token
+                    });
+                    try {
+                        const savedHotel = Guest.save();
+                    res.json({ data: Guest, message: 'Guest Doesnot Exists' })
+
+                    } catch (err) {
+                        res.status(400).send(err);
+                    }
                 } else {
                     const idData = result[0]._id
                     // console.log(result[0])

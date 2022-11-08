@@ -2,7 +2,7 @@ const adminModel = require("../models/adminModel");
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 const forgetPasswordModel = require("../models/forgetPasswordModel");
-var nodemailer  = require('nodemailer')
+var nodemailer = require('nodemailer')
 
 exports.getAlladmins = (req, res) => {
     adminModel.find({}, (error, result) => {
@@ -34,7 +34,7 @@ exports.loginAdmin = (req, res) => {
         } else {
             if (result) {
                 if (bcrypt.compareSync(req.body.password, result.password)) {
-                   res.send(result)
+                    res.send(result)
                 } else {
                     res.sendStatus(401)
                 }
@@ -44,58 +44,57 @@ exports.loginAdmin = (req, res) => {
         }
     })
 }
-exports.forgetPasswordAdmin = async(req, res) => {
+exports.forgetPasswordAdmin = async (req, res) => {
     let data = await adminModel.findOne({
-        email:req.body.email});
-        console.log(data)
-        const responseType ={};
-        if(data){
-            let otpcode = Math.floor((Math.random()*10000)+1);
-            let otpData =new forgetPasswordModel({
-                _id: mongoose.Types.ObjectId(),
-                email:req.body.email,
-                code:otpcode,
-                expiresIn:new Date().getTime()+ 300*1000
-            })
-            let otpResponse=await otpData.save();
-            responseType.statusText = 'Success'
-            mailer(req.body.email,otpcode)
-            console.log(otpcode)
-            responseType.message='Please check Your Email Id';
-            responseType.otp=otpcode;
-
-            
-           
-        }else{
-            responseType.statusText = 'error'
-            responseType.message='Email Id not Exist';
-        }
-        res.status(200).json(responseType)
+        email: req.body.email
+    });
+    const responseType = {};
+    responseType.data = data
+    console.log(data)
+    if (data) {
+        let otpcode = Math.floor((Math.random() * 10000) + 1);
+        let otpData = new forgetPasswordModel({
+            _id: mongoose.Types.ObjectId(),
+            email: req.body.email,
+            code: otpcode,
+            expiresIn: new Date().getTime() + 300 * 1000
+        })
+        let otpResponse = await otpData.save();
+        responseType.statusText = 'Success'
+        mailer(req.body.email, otpcode)
+        console.log(otpcode)
+        responseType.message = 'Please check Your Email Id';
+        responseType.otp = otpcode;
+    } else {
+        responseType.statusText = 'error'
+        responseType.message = 'Email Id not Exist';
+    }
+    res.status(200).json(responseType)
 }
-const mailer  =(email,otp) =>{
+const mailer = (email, otp) => {
     var transporter = nodemailer.createTransport({
-        service:'gmail',
+        service: 'gmail',
         port: 587,
-        secure:false,
-        auth:{
-            user:'rimshanimo22@gmail.com',
-            pass:'oespmdfxhmbhrxgd'
+        secure: false,
+        auth: {
+            user: 'rimshanimo22@gmail.com',
+            pass: 'oespmdfxhmbhrxgd'
         }
     });
     transporter.verify().then(console.log).catch(console.error);
 
-      // send mail with defined transport object
-    var mailOptions ={
-        from :'rimshanimo22@gmail.com',
-        to:email,
-        subject:`OTP code is `+otp,
-        text:`Email Verification :OTP code is `+otp,
+    // send mail with defined transport object
+    var mailOptions = {
+        from: 'rimshanimo22@gmail.com',
+        to: email,
+        subject: `OTP code is ` + otp,
+        text: `Email Verification :OTP code is ` + otp,
 
     };
-    transporter.sendMail(mailOptions,function(error,info){
-        if(error){
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
             console.log(error);
-        }else{
+        } else {
             // console.log('Email sent ' + info.response)
         }
     });
@@ -106,7 +105,7 @@ exports.deleteadmin = (req, res) => {
         if (error) {
             res.send(error)
         } else {
-            res.json({message:"Deleted Successfully"})
+            res.json({ message: "Deleted Successfully" })
         }
     })
 }
