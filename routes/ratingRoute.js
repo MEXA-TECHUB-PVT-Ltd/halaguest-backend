@@ -8,6 +8,8 @@ router.post("/createRating" , controller.createRating);
 router.put("/updateRating" , controller.updateRating);
 router.get("/getDriverRating/:DriverId" , controller.getDriverRatings);
 
+router.get("/getTotalRatingDriver/:DriverId" , controller.getTotalRatingDriver);
+
 // router.put("/loginRating" , controller.loginRating);
 
 

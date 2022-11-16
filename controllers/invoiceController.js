@@ -10,47 +10,71 @@ exports.getAllInvoices = (req, res) => {
             res.send(result)
         }
     }).sort({ $natural: -1 })
-        .populate({
-            path: 'order_id',
-            populate: {
-                path: 'guest_id',
-                model: 'guest',
-            }
-        })
-        .populate({
-            path: 'order_id',
-            populate: {
-                path: 'driver_id',
-                model: 'driver',
-                populate: {
-                    path: 'dispacher_id',
-                    model: 'dispacher',
-                }
-            }
-        })
-        .populate({
-            path: 'order_id',
-            populate: {
-                path: 'driver_id',
-                model: 'driver',
-                populate: {
-                    path: 'vehicle_detail_id',
-                    model: 'vehicle_detail',
-                }
-            }
-        })
-        .populate({
-            path: 'order_id',
-            populate: {
-                path: 'driver_id',
-                model: 'driver',
-                populate: {
-                    path: 'doc_id',
-                    model: 'driver_documents',
-                }
-            }
-        })
+        .populate('order_id' )
+        .populate('hotel_id' )
+        .populate('guest_id' )
+        .populate('driver_id' )
+
+
+
+      
 }
+exports.getDriverTransactionCompleted = (req, res) => {
+    const DriverId = req.params.driver_id;
+    invoiceModel.find({ driver_id: DriverId }, function (err, foundResult) {
+      try {
+        res.json(foundResult)
+      } catch (err) {
+        res.json(err)
+      }
+    }).populate('order_id' )
+    .populate('hotel_id' )
+    .populate('guest_id' )
+    .populate('driver_id' )
+  
+  }
+  exports.getHotelTransactionCompleted = (req, res) => {
+    const HotelId = req.params.hotel_id;
+    invoiceModel.find({ hotel_id: HotelId }, function (err, foundResult) {
+      try {
+        res.json(foundResult)
+      } catch (err) {
+        res.json(err)
+      }
+    }).populate('order_id' )
+    .populate('hotel_id' )
+    .populate('guest_id' )
+    .populate('driver_id' )
+  
+  }
+  exports.getGuestsTransactionCompleted = (req, res) => {
+    const GuestId = req.params.guest_id;
+    invoiceModel.find({ guest_id: GuestId }, function (err, foundResult) {
+      try {
+        res.json(foundResult)
+      } catch (err) {
+        res.json(err)
+      }
+    }).populate('order_id' )
+    .populate('hotel_id' )
+    .populate('guest_id' )
+    .populate('driver_id' )
+  
+  }
+  exports.getOrderTransactionCompleted = (req, res) => {
+    const OrderId = req.params.order_id;
+    invoiceModel.find({ order_id: OrderId }, function (err, foundResult) {
+      try {
+        res.json(foundResult)
+      } catch (err) {
+        res.json(err)
+      }
+    }).populate('order_id' )
+    .populate('hotel_id' )
+    .populate('guest_id' )
+    .populate('driver_id' )
+  
+  }
 
 exports.getSpecificInvoice = (req, res) => {
     const InvoiceId = req.params.InvoiceId;
@@ -60,46 +84,11 @@ exports.getSpecificInvoice = (req, res) => {
         } catch (err) {
             res.json(err)
         }
-    }).populate({
-        path: 'order_id',
-        populate: {
-            path: 'guest_id',
-            model: 'guest',
-        }
     })
-        .populate({
-            path: 'order_id',
-            populate: {
-                path: 'driver_id',
-                model: 'driver',
-                populate: {
-                    path: 'dispacher_id',
-                    model: 'dispacher',
-                }
-            }
-        })
-        .populate({
-            path: 'order_id',
-            populate: {
-                path: 'driver_id',
-                model: 'driver',
-                populate: {
-                    path: 'vehicle_detail_id',
-                    model: 'vehicle_detail',
-                }
-            }
-        })
-        .populate({
-            path: 'order_id',
-            populate: {
-                path: 'driver_id',
-                model: 'driver',
-                populate: {
-                    path: 'doc_id',
-                    model: 'driver_documents',
-                }
-            }
-        })
+    .populate('order_id' )
+    .populate('hotel_id' )
+    .populate('guest_id' )
+    .populate('driver_id' )
 }
 exports.deleteInvoice = (req, res) => {
     const InvoiceId = req.params.InvoiceId;
