@@ -52,6 +52,10 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'driver'
     },
+    dispacher_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'dispacher'
+    },
     Invoice: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'invoice'

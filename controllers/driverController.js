@@ -75,7 +75,7 @@ exports.getSpecificDriver = (req, res) => {
             path: 'payment_detail_id',
             model: 'payment_details',
         }
-    })
+    }).populate('payment_detail_id')
         .populate({
             path: 'vehicle_detail_id',
             populate: {
@@ -146,7 +146,7 @@ exports.createDriver = async (req, res) => {
     }
 }
 exports.updateDriver = async (req, res) => {
-    if (req.body.vehicle_detail_id === '') {
+    if (req.body.vehicle_detail_id === undefined) {
         const updateData = {
             name: req.body.name,
             gender: req.body.gender,
@@ -290,30 +290,6 @@ exports.getSearchOrder = async (req, res) => {
             res.json(err)
         }
     })
-    // const Location_lat = req.body.location_lat;
-    // const distanceRadius = req.body.distance;
-    // const Location_log = req.body.location_log;
-    // let ArrayCond = [];
-    // ArrayCond = await orderModel.aggregate([
-    //     {
-    //         $geoNear: {
-    //             near: {
-    //                 type: 'Point',
-    //                 coordinates: [parseFloat(Location_log), parseFloat(Location_lat)]
-    //             },
-    //             maxDistance: parseInt(distanceRadius),
-    //             distanceField: 'distance',
-    //         }
-    //     },
-    //     {
-    //         $match: {
-    //             condition_id: mongoose.Types.ObjectId(req.body.condition_id),
-    //             car_type_id: mongoose.Types.ObjectId(req.body.car_type_id),
-    //             ac: req.body.ac
-    //         }
-    //     },
-    // ])
-    // return res.json(ArrayCond)
 
 
 }

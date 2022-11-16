@@ -1,6 +1,7 @@
 const ratingModel = require("../models/ratingReviewsModel");
 const mongoose = require("mongoose");
 const moment = require('moment');
+const collect = require('collect.js');
 const orderModel = require("../models/orderModel");
 const driverModel = require("../models/driverModel");
 exports.getAllRatings = (req, res) => {
@@ -137,6 +138,35 @@ exports.updateRating = async (req, res) => {
         }
     })
 }
-
+exports.getTotalRatingDriver = (req, res) => {
+    const driverId = req.params.DriverId;
+    ratingModel.find({ driver_id:driverId }, (error, result) => {
+        if (error) {
+            res.send(error)
+        } else {
+            //  res.json(foundResult)
+            var newArr = result.map(function (val, index) {
+                return {
+                    value: val.star
+                };
+            })
+            let total = 0;
+            // Count Number of elements
+            const dataCount = collect(newArr);
+            const totalCount = dataCount.count();
+            //   calculate total 
+            newArr.forEach(element => {
+                total = parseInt(total) + parseInt(element.value)
+            });
+            // console.log(total)
+            // console.log(totalCount)
+            let Rating = ((total/5)/totalCount)*5;
+            // console.log()
+            let RatingFinal=Rating.toFixed(0);
+            res.status(200).json(RatingFinal)
+        }
+    }
+    )
+}
 
 

@@ -17,9 +17,12 @@ const fileFilter = (req, file, callBack) => {
     if (allowedFileTypes.includes(file.mimetype)) {
         callBack(null, true)
     } else {
+        // console.log('Only Images Allowed')
+        // res.json('Only Images Allowed')
         callBack(null, false)
     }
 }
+
 const upload = multer({
     storage: multerMiddleWareStorage,
     limits: {
@@ -33,8 +36,9 @@ const UploadImage = app.post('/', upload.single('image'), (req, res) => {
         // fs.unlinkSync('image-uploads\\1667388070942.jpg');
         // console.log('File deleted!');
         const imageUpload = req.file.path
+        console.log(req.file.path)
         if(req.file.path===null){
-            res.json({message:"imageUpload"})
+            res.json({message:"Only Image File Allowed"})
         }else{
             res.json(imageUpload)
         }
